@@ -2,13 +2,27 @@
 <html>
 <head>
 <meta charset="utf-8">
+<!-- 在 head 标签中添加 meta 标签，并设置 viewport-fit=cover 值 -->
+<meta
+		name="viewport"
+		content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover"
+/>
+<!-- 引入样式文件 -->
+<link
+		rel="stylesheet"
+		href="https://fastly.jsdelivr.net/npm/vant@4/lib/index.css"
+/>
+
+<!-- 引入 Vue 和 Vant 的 JS 文件 -->
+<script src="https://fastly.jsdelivr.net/npm/vue@3"></script>
+<script src="https://fastly.jsdelivr.net/npm/vant@4/lib/vant.min.js"></script>
 <title>Find Loan</title>
 <style>
 	html{
 		height:100%;
 	}
-	body{
-		background:url(./3.png) no-repeat center center;
+	.body{
+		/*background:url(./3.png) no-repeat center center;*/
 		background-sieze:cover;
 		background-attachment:fixed;
 		background-color:#CCCCCC;
@@ -26,15 +40,69 @@
 		margin-bottom: 0px;
 		font-style: italic;
 	}
+	.item{
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		margin-top: 20px;
+	}
+	.row-item{
+		margin-top: 10px;
+	}
 </style>
 </head>
 <body>
-	<div class="payback">
-		<div style="font-size: 80px;">Find L</div>
-		<div>Name: test</div>
-		<div>Wing: 12345678</div>
-		<div>ABA:  001001001</div>
-		<div>Phone:011011011</div>
+	<!-- 开启顶部安全区适配 -->
+	<van-nav-bar safe-area-inset-top />
+	<div id="app">
+
 	</div>
+	<!-- 开启底部安全区适配 -->
+	<van-number-keyboard safe-area-inset-bottom />
 </body>
+<script>
+	// 在 #app 标签下渲染一个按钮组件
+	const app = Vue.createApp({
+		template: `
+<div class="item" v-if="active==0">
+<div style="font-size: 20px; margin-bottom: 10px;">Find&nbsp;L</div>
+<div><van-image style="width: 100px" src="wing.png"></div>
+<div class="row-item"><span>Account Name:</span>&nbsp;<span>SOKKHUN PHORN</span></div>
+<div class="row-item"><span>Account Number:</span>&nbsp;<span>100&nbsp;241&nbsp;045</span></div>
+<div class="row-item"><van-image style="width: 100px" src="Find-W.png"></div>
+</div>
+<div class="item" v-if="active==1">
+<div style="font-size: 20px; margin-bottom: 10px;">Find&nbsp;L</div>
+<div><van-image style="width: 100px" src="ABA.png"></div>
+<div class="row-item"><span>Account Name:</span>&nbsp;<span>Sokkhun PHORN</span></div>
+<div class="row-item"><span>Account Number:</span>&nbsp;<span>006&nbsp;542&nbsp;111</span></div>
+<div class="row-item"><van-image style="width: 100px" src="Find-A.png"></div>
+</div>
+<van-tabbar @change="barChange" v-model="active">
+  <van-tabbar-item >Wing</van-tabbar-item>
+  <van-tabbar-item >ABA</van-tabbar-item>
+</van-tabbar>`,
+		data(){
+			return{
+				active:0
+			}
+		},
+		methods:{
+			barChange(item){
+				this.active = item
+			}
+		}
+	});
+	app.use(vant);
+
+	// 通过 CDN 引入时不会自动注册 Lazyload 组件
+	// 可以通过下面的方式手动注册
+	app.use(vant.Lazyload);
+
+	// 调用工具函数，弹出一个 Toast
+	// vant.showToast('提示');
+
+	app.mount('#app');
+</script>
 </html>
